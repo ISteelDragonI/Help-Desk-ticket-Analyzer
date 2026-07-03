@@ -21,29 +21,12 @@ def display_basic_summary(tickets):
     """
     Displays basic summary information about the ticket data
     """
-    total_tickets = len(tickets)
+    report_lines = generate_summary_report(tickets)
 
-    open_tickets = len(tickets[tickets["status"].str.lower() == "open"])
-    closed_tickets = len(tickets[tickets["status"].str.lower() == "closed"])
+    print()
 
-    most_common_issue = tickets["issue_type"].mode()[0]
-    department_with_most_tickets = tickets["department"].mode()[0]
-
-    average_resolution_time = tickets["resolution_time_hours"].mean()
-
-    high_priority_open = tickets[
-        (tickets["priority"].str.lower() == "high") &
-        (tickets["status"].str.lower() == "open")
-    ]
-
-    print("\n==== Help Desk Ticket Summary ====")
-    print(f"Total tickets: {total_tickets}")
-    print(f"Open tickets: {open_tickets}")
-    print(f"Closed tickets: {closed_tickets}")
-    print(f"Most common issue type: {most_common_issue}")
-    print(f"Department with most tickets: {department_with_most_tickets}")
-    print(f"Average resolution time: {average_resolution_time:.2f} hours")
-    print(f"High priority unresolved tickets: {len(high_priority_open)}")
+    for line in report_lines:
+        print(line)
 
 def display_tickets_by_issue_type(tickets):
     """
@@ -65,8 +48,65 @@ def display_tickets_by_department(tickets):
     for department, count in department_counts.items():
         print(f"{department}: {count}")
 
+def generate_summary_report(tickets):
+    """
+    Creates a list of summary report lins from the ticket data.
+    
+    Returning the report as a list makes it reusable:
+    - We can print it to the terminal.
+    - We can save it to a file.
+    """
+    total_tickets = len(tickets)
+
+    open_tickets = len(tickets[tickets["status"].str.lower() == "open"])
+    closed_tickets = len(tickets[tickets["status"].str.lower() == "closed"])
+
+    most_common_issue = tickets["issue_type"].mode()[0]
+    department_with_most_tickets = tickets["department"].mode()[0]
+
+    average_resolution_time = tickets["resolution_time_hours"].mean()
+
+    high_priority_open = tickets [
+        (tickets["priority"].str.lower() == "high") &
+        (tickets["status"].str.lower() == "open")
+    ]
+
+    report_lines = [
+        "==== Help Desk Ticket Summary ====",
+        f"Total tickets: {total_tickets}"
+        f"Open tickets: {open_tickets}"
+        f"Closed tickets: {closed_tickets}"
+        f"Most common issue type: {most_common_issue}"
+        f"Department with most tickets: {department_with_most_tickets}"
+        f"Average resolution time: {average_resolution_time:.2f} hours"
+        f"High priority unresolved tickets {len(high_priority_open)}"
+    ]
+
+    return report_lines
+
+def save_report_to_file(tickets, output_path):
+    """
+    Saves the ticket summaryt report to a text file.
+    
+    Parameters:
+        tickets: The pandas DataFrame containing ticket data.
+        output_path: The path where the report should be saved.
+    """
+    report_lines = generate_summary_report(tickets)
+
+    try:
+        with open(output_path, "w") as report_file:
+            for line in report_lines:
+                report_file.write(line + "\n")
+
+        print(f"\nReport saved to {output_path}")
+
+    except FileNotFoundError:
+        print("Error: Reports folder was not found.")
+
 def main():
     file_path = "data/tickets.csv"
+    output_path = "reports/ticket_summary_report.txt"
 
     tickets = load_ticket_data(file_path)
 
@@ -76,6 +116,8 @@ def main():
     display_basic_summary(tickets)
     display_tickets_by_issue_type(tickets)
     display_tickets_by_department(tickets)
+
+    save_report_to_file(tickets, output_path)
 
 if __name__ == "__main__":
     main()
