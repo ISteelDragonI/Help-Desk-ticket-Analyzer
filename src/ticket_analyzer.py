@@ -73,12 +73,12 @@ def generate_summary_report(tickets):
 
     report_lines = [
         "==== Help Desk Ticket Summary ====",
-        f"Total tickets: {total_tickets}"
-        f"Open tickets: {open_tickets}"
-        f"Closed tickets: {closed_tickets}"
-        f"Most common issue type: {most_common_issue}"
-        f"Department with most tickets: {department_with_most_tickets}"
-        f"Average resolution time: {average_resolution_time:.2f} hours"
+        f"Total tickets: {total_tickets}",
+        f"Open tickets: {open_tickets}",
+        f"Closed tickets: {closed_tickets}",
+        f"Most common issue type: {most_common_issue}",
+        f"Department with most tickets: {department_with_most_tickets}",
+        f"Average resolution time: {average_resolution_time:.2f} hours",
         f"High priority unresolved tickets {len(high_priority_open)}"
     ]
 

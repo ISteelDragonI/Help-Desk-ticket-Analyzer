@@ -1,2 +1,8 @@
 ==== Help Desk Ticket Summary ====
-Total tickets: 10Open tickets: 3Closed tickets: 7Most common issue type: Password ResetDepartment with most tickets: ITAverage resolution time: 2.93 hoursHigh priority unresolved tickets 2
+Total tickets: 10
+Open tickets: 3
+Closed tickets: 7
+Most common issue type: Password Reset
+Department with most tickets: IT
+Average resolution time: 2.93 hours
+High priority unresolved tickets 2
