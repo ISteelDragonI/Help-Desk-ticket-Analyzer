@@ -1,0 +1,11 @@
+ticket_id,date,department,issue_type,priority,status,resolution_time_hours
+1001,2026-06-01,IT,Password Reset,Low,Closed,1.5
+1002,2026-06-01,HR,Software Install,Medium,Closed,3.0
+1003,2026-06-02,Finance,Network Issue,High,Open,
+1004,2026-06-02,IT,Password Reset,Low,Closed,1.0
+1005,2026-06-03,Operations,Hardware Issue,High,Closed,6.5
+1006,2026-06-03,IT,Email Issue,Medium,Open,
+1007,2026-06-04,Finance,Software Install,Medium,Closed,4.0
+1008,2026-06-04,HR,Password Reset,Low,Closed,2.0
+1009,2026-06-05,Operations,Network Issue,High,Open,
+1010,2026-06-05,IT,Email Issue,Medium,Closed,2.5
