@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def load_ticket_data(file_path):
     """
@@ -104,6 +105,74 @@ def save_report_to_file(tickets, output_path):
     except FileNotFoundError:
         print("Error: Reports folder was not found.")
 
+def create_issue_type_chart(tickets, output_path):
+    """
+    Creates and saves a bar chart showing number of tickets by issue type.
+    """
+    issue_counts = tickets["issue_type"].value_counts()
+
+    plt.figure(figsize=(8, 5))
+    issue_counts.plot(kind="bar")
+
+    plt.title("Tickets by Issue Type")
+    plt.xlabel("Issue type")
+    plt.ylabel("Number of Tickets")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+
+    plt.savefig(output_path)
+    plt.close()
+
+    print(f"Issue type chart saved to {output_path}")
+
+def create_department_chart(tickets, output_path):
+    """
+    Creates and saves a bar chart showing the number of tickets by department.
+    """
+    department_counts = tickets["department"].value_counts()
+
+    plt.figure(figsize=(8, 5))
+    department_counts.plot(kind="bar")
+
+    plt.title("Tickets by Department")
+    plt.xlabel("Department")
+    plt.ylabel("Number of Tickets")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+
+    plt.savefig(output_path)
+    plt.close()
+
+    print(f"Department chart saved to {output_path}")
+
+def create_status_chart(tickets, output_path):
+    """
+    Creates and saves a bar chart showing the number of tickets by status.
+    """
+    status_counts = tickets["status"].value_counts()
+
+    plt.figure(figsize=(6, 4))
+    status_counts.plot(kind="bar")
+
+    plt.title("Tickets by Status")
+    plt.xlabel("Status")
+    plt.ylabel("Number of Tickets")
+    plt.xticks(rotation=0)
+    plt.tight_layout()
+
+    plt.savefig(output_path)
+    plt.close()
+
+    print(f"Status chart saved to {output_path}")
+
+def create_all_charts(tickets):
+    """
+    Creates all chart reports and saves them to the reports folder.
+    """
+    create_issue_type_chart(tickets, "reports/tickets_by_issue_type.png")
+    create_department_chart(tickets, "reports/tickets_by_department.png")
+    create_status_chart(tickets, "reports/tickets_by_status.png")
+
 def main():
     file_path = "data/tickets.csv"
     output_path = "reports/ticket_summary_report.txt"
@@ -118,6 +187,8 @@ def main():
     display_tickets_by_department(tickets)
 
     save_report_to_file(tickets, output_path)
+
+    create_all_charts(tickets)
 
 if __name__ == "__main__":
     main()
