@@ -173,6 +173,67 @@ def create_all_charts(tickets):
     create_department_chart(tickets, "reports/tickets_by_department.png")
     create_status_chart(tickets, "reports/tickets_by_status.png")
 
+def display_high_priority_open_tickets(tickets):
+    """
+    Displays all tickets that are both high priority and still open.
+    These are usually the most urgent tickets for IT support teams.
+    """
+    high_priority_open = tickets[
+        (tickets["priority"].str.lower() == "high") &
+        (tickets["status"].str.lower() == "open")
+    ]
+
+    print("\n==== High Priority Open Tickets ====")
+
+    if high_priority_open.empty:
+        print("No high priority open tickets found.")
+        return
+    for _, ticket in high_priority_open.iterrows():
+        print(
+            f"Ticket {ticket['ticket_id']} | "
+            f"Department: {ticket['department']} | "
+            f"Issue: {ticket['issue_type']} | "
+            f"Date: {ticket['date']}"
+        )
+    
+def filter_by_status(tickets, status):
+    """
+    Returns tickets that match a specific status, such as Open.
+    """
+    return tickets[tickets["status"].str.lower() == status.lower()]
+
+def filter_by_priority(tickets, priority):
+    """
+    Returns tickets that match a specic priority, such as Low, Medium, or High.
+    """ 
+    return tickets[tickets["priority"].str.lower() == priority.lower()]
+
+def filter_by_department(tickets, department):
+    """
+    Returns tickets that match a specific department, such as IT.
+    """
+    return tickets[tickets["department"].str.lower() == department.lower()]
+
+def display_filtered_tickets(filtered_tickets, title):
+    """
+    Displays filtered ticket results in a readable format.
+    """
+    print(f"\n==== {title} ====")
+
+    if filtered_tickets.empty:
+        print("No tickets found.")
+        return
+    
+    for _, ticket in filtered_tickets.iterrows():
+        print(
+            f"Ticket {ticket['ticket_id']} | "
+            f"Date: {ticket["date"]} | "
+            f"Department: {ticket["department"]} | "
+            f"Issue: {ticket["issue_type"]} | "
+            f"Priority {ticket["priority"]} | "
+            f"Status: {ticket["status"]}"
+        )
+
 def main():
     file_path = "data/tickets.csv"
     output_path = "reports/ticket_summary_report.txt"
@@ -189,6 +250,17 @@ def main():
     save_report_to_file(tickets, output_path)
 
     create_all_charts(tickets)
+
+    display_high_priority_open_tickets(tickets)
+
+    open_tickets = filter_by_status(tickets, "Open")
+    display_filtered_tickets(open_tickets, "Open Tickets")
+
+    high_priority_tickets = filter_by_priority(tickets, "High")
+    display_filtered_tickets(high_priority_tickets, "High Priority Tickets")
+
+    it_tickets = filter_by_department(tickets, "IT")
+    display_filtered_tickets(it_tickets, "IT Department Tickets")
 
 if __name__ == "__main__":
     main()
